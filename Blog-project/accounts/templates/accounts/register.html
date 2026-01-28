@@ -1,0 +1,222 @@
+{% extends 'blog/base.html' %} 
+{% load static %}
+{% block title %}Register{% endblock %} 
+{% block extra_css %}
+ <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %} 
+{% block content %}
+<div class="register-container">
+  <div class="card register-card">
+    <div class="register-header">
+      <h1>Create Account</h1>
+      <p>Join our community and start sharing your stories</p>
+    </div>
+
+    <div class="register-form">
+      {% if form.non_field_errors %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Registration Error:</strong>
+        <ul class="mb-0">
+          {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+      </div>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <!-- First Name & Last Name Row -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_name" class="form-label">
+              First Name <span class="required-star">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="first_name"
+              name="first_name"
+              required
+              placeholder="John"
+            />
+            {% if form.first_name.errors %}
+            <div class="error-message">{{ form.first_name.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="last_name" class="form-label">
+              Last Name <span class="required-star">*</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="last_name"
+              name="last_name"
+              required
+              placeholder="Doe"
+            />
+            {% if form.last_name.errors %}
+            <div class="error-message">{{ form.last_name.errors.0 }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">
+            Email Address <span class="required-star">*</span>
+          </label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+          />
+          {% if form.email.errors %}
+          <div class="error-message">{{ form.email.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">
+            Password <span class="required-star">*</span>
+          </label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            required
+            placeholder="Enter a strong password"
+          />
+          {% if form.password.errors %}
+          <div class="error-message">{{ form.password.errors.0 }}</div>
+          {% endif %}
+          <small class="form-text text-muted mt-2">
+            Use at least 8 characters with a mix of letters and numbers
+          </small>
+        </div>
+
+        <!-- Phone & Date of Birth Row -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone" class="form-label">
+              Phone <span class="required-star">*</span>
+            </label>
+            <input
+              type="tel"
+              class="form-control"
+              id="phone"
+              name="phone"
+              required
+              placeholder="+1 (555) 000-0000"
+            />
+            {% if form.phone.errors %}
+            <div class="error-message">{{ form.phone.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="date_of_birth" class="form-label">
+              Date of Birth <span class="required-star">*</span>
+            </label>
+            <input
+              type="date"
+              class="form-control"
+              id="date_of_birth"
+              name="date_of_birth"
+              required
+            />
+            {% if form.date_of_birth.errors %}
+            <div class="error-message">{{ form.date_of_birth.errors.0 }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+          <label for="address" class="form-label">
+            Address <span class="required-star">*</span>
+          </label>
+          <textarea
+            class="form-control"
+            id="address"
+            name="address"
+            rows="3"
+            required
+            placeholder="Enter your street address"
+          ></textarea>
+          {% if form.address.errors %}
+          <div class="error-message">{{ form.address.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Profile Image -->
+        <div class="form-group">
+          <label for="image" class="form-label">Profile Picture</label>
+          <label for="image" class="file-input-label">
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onchange="updateFileName(this)"
+            />
+            <span class="file-input-text">
+              <i class="bi bi-cloud-upload"></i> Click to upload or drag and
+              drop
+            </span>
+          </label>
+          <small class="form-text text-muted mt-2">
+            PNG, JPG, or GIF (max 5MB)
+          </small>
+          {% if form.image.errors %}
+          <div class="error-message">{{ form.image.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary submit-btn mt-3">
+          Create Account
+        </button>
+
+        <!-- Already have account link -->
+        <p class="auth-link">
+          Already have an account? <a href="{% url 'login' %}">Log in here</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateFileName(input) {
+    const fileText = input.nextElementSibling;
+    if (input.files && input.files[0]) {
+      const fileName = input.files[0].name;
+      fileText.innerHTML = `<i class="bi bi-check-circle"></i> ${fileName} selected`;
+    }
+  }
+
+  // Add Bootstrap validation styling
+  const form = document.querySelector("form");
+  form.addEventListener("submit", function (event) {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add("was-validated");
+  });
+</script>
+{% endblock %}

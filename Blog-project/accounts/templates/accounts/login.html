@@ -1,0 +1,94 @@
+{% extends 'blog/base.html' %} 
+{% load static %}
+{% block title %}Login{% endblock %} 
+{% block extra_css %}
+ <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block content %}
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Welcome Back</h1>
+      <p>Sign in to your account to continue</p>
+    </div>
+
+    <div class="login-body">
+      {% if error_message %}
+      <div class="alert-error">
+        <span>⚠️</span>
+        <div>
+          <strong>Login Failed</strong><br />
+          {{ error_message }}
+        </div>
+      </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <!-- Phone Field -->
+        <div class="form-group">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input
+            type="text"
+            class="form-control"
+            id="phone"
+            name="phone"
+            placeholder="Enter your phone number"
+            required
+            autofocus
+          />
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="remember-forgot">
+          <div class="remember-me">
+            <input type="checkbox" id="remember" name="remember" />
+            <label for="remember">Remember me</label>
+          </div>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="login-btn">Sign In</button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>or</span>
+      </div>
+
+      <!-- Social Login Options -->
+      <div class="social-login">
+        <a href="#" class="social-btn" title="Login with Google">
+          <span>🔔</span> Google
+        </a>
+        <a href="#" class="social-btn" title="Login with Facebook">
+          <span>📘</span> Facebook
+        </a>
+      </div>
+
+      <!-- Register Link -->
+      <div class="auth-footer">
+        <p>
+          Don't have an account?
+          <a href="{% url 'register' %}">Create one now</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

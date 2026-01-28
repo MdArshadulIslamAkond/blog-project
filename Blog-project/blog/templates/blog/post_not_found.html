@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+
+            <div class="alert alert-danger shadow-sm p-4">
+                <h2 class="mb-3">🚫 Post Not Found</h2>
+
+                <p class="fs-5">
+                    The blog post you are trying to access or delete
+                    does not exist or may have already been removed.
+                </p>
+
+                <hr>
+
+                <p class="text-muted">
+                    If you believe this is a mistake, please contact the administrator.
+                </p>
+
+                <a href="{% url 'home' %}" class="btn btn-primary mt-3">
+                    ← Back to Blog Posts
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
